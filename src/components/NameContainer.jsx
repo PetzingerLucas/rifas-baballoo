@@ -68,32 +68,32 @@ function NameContainer(props) {
   const handleAdminClick = () => {
     const newSelections = { ...selections };
     const selection = newSelections[props.name];
-    if (selection && selection.name !== currentUser && selection.isConfirmed) {
-      setIsConfirmed(!isConfirmed);
-      newSelections[props.name] = {
-        name: selection.name,
-        selectionQty: 1,
-        isConfirmed: !isConfirmed,
-      };
-    } else if (
-      selection &&
-      selection.name !== currentUser &&
-      !selection.isConfirmed
-    ) {
-      newSelections[props.name] = {
-        name: selection.name,
-        selectionQty: 1,
-        isConfirmed: true,
-      };
+    const element = document.getElementById(props.name);
+
+    if (element.classList.contains("selected-container-other")) {
+      if (
+        selection &&
+        selection.name !== currentUser &&
+        selection.isConfirmed
+      ) {
+        setIsConfirmed(!isConfirmed);
+        newSelections[props.name] = {
+          name: selection.name,
+          selectionQty: 1,
+          isConfirmed: !isConfirmed,
+        };
+      } else {
+        newSelections[props.name] = {
+          name: currentUser,
+          selectionQty: 1,
+          isConfirmed: true,
+        };
+      }
+      setSelections(newSelections);
+      socket.emit("selected", newSelections);
     } else {
-      newSelections[props.name] = {
-        name: currentUser,
-        selectionQty: 1,
-        isConfirmed: false,
-      };
+      alert("Este nome ainda não foi selecionado por ninguém!");
     }
-    setSelections(newSelections);
-    socket.emit("selected", newSelections);
   };
 
   useEffect(() => {
