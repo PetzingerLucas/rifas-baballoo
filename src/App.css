@@ -129,7 +129,7 @@
   border-top-right-radius: 5px;
 }
 
-/* Button */
+/* Botão */
 .button {
   background-color: #4CAF50;
   color: #fff;
@@ -141,6 +141,13 @@
 
 .button:hover {
   background-color: #388E3C;
+}
+
+/* Botão Desabilitado */
+.button.disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 
 /* Total */
@@ -188,4 +195,14 @@
 
 .user-name-text {
   font-family: Arial, sans-serif;
+}
+
+.confirmed {
+  background-color: #e6bbad;
+  /* cor azul pastel */
+}
+
+.selected-container-confirmed {
+  background-color: #e6bbad;
+  background-image: linear-gradient(to bottom right, transparent calc(50% - 0.5px), #ff0000, transparent calc(50% + 0.5px));
 }

@@ -41,6 +41,12 @@ function GenerateRaffle() {
     navigate("/rifa");
   };
 
+  useEffect(() => {
+    if (!context.isLogged) {
+      navigate("/");
+    }
+  }, [context.isLogged, navigate]);
+
   const sendRaffleInfoToServer = () => {
     // Envia as informações da rifa para o servidor websocket
     socket.emit("raffle_info", state);

@@ -12,6 +12,7 @@ socket.on("connect", () => {
 function App() {
   const [total, setTotal] = useState(0);
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [price, setPrice] = useState(10);
   const [containerData, setContainerData] = useState([]);
 
@@ -30,6 +31,8 @@ function App() {
     type: "",
   });
 
+  const [isLogged, setIsLogged] = useState(false); // Novo estado adicionado
+
   const store = {
     total,
     setTotal,
@@ -44,6 +47,10 @@ function App() {
     socket,
     containerData,
     setContainerData,
+    isLogged, // Adicionado à lista de estados do contexto
+    setIsLogged, // Adicionado à lista de estados do contexto
+    isAdmin,
+    setIsAdmin,
   };
 
   return (
