@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Chat from "../Chat";
 import GenerateRaffle from "./GenerateRaffle";
 import Login from "./Login";
 
