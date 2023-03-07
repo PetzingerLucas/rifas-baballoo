@@ -36,7 +36,7 @@ function GenerateRaffle() {
       quantity: state.quantity,
       type: state.type,
     });
-    setInterval(sendRaffleInfoToServer, 2000);
+    sendRaffleInfoToServer();
 
     navigate("/rifa");
   };
@@ -49,7 +49,7 @@ function GenerateRaffle() {
 
   const sendRaffleInfoToServer = () => {
     // Envia as informações da rifa para o servidor websocket
-    socket.emit("raffle_info", state);
+    socket.emit("update_raffle_info", state);
   };
   return (
     <div className="App">

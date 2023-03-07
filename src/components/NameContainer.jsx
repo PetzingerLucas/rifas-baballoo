@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import Context from "../context/Context";
 
 function NameContainer(props) {
-  const { setTotal, user, state, setUser, socket, isAdmin } =
-    useContext(Context);
+  const { setTotal, user, state, setUser, socket } = useContext(Context);
   const [isSelected, setIsSelected] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
   const [selections, setSelections] = useState({});
   const [socketData, setSocketData] = useState({});
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isAdmin] = useState(localStorage.getItem("isAdmin") === "true");
 
   const handleClick = (event) => {
     calcTotal();
@@ -99,55 +99,39 @@ function NameContainer(props) {
   useEffect(() => {
     const selection = selections[props.name];
     if (selection) {
-      setIsSelected(true);
       setCurrentUser(selection.name);
+      setIsSelected(true);
       setIsConfirmed(selection.isConfirmed);
     } else {
-      setIsSelected(false);
       setCurrentUser("");
+      setIsSelected(false);
       setIsConfirmed(false);
     }
-  }, [props.name, selections, isAdmin]);
+  }, [selections, props.name]);
 
   useEffect(() => {
-    const handleSelections = (newSelections) => {
-      setSocketData(newSelections);
-    };
-    socket.on("selected", handleSelections);
-    // Atualize as informações a cada segundo
-    const interval = setInterval(() => {
-      socket.emit("selected", selections);
-    }, 1000);
+    socket.on("selected", (selections) => {
+      setSelections(selections);
+    });
+    socket.on("raffle_info", (data) => {
+      setSocketData(data);
+      setSelections(data.selections);
+    });
+
     return () => {
-      socket.off("selected", handleSelections);
-      clearInterval(interval);
+      socket.off("selected");
+      socket.off("raffle_info");
     };
-  }, [selections, socket]);
-
-  useEffect(() => {
-    // Atualize o estado local selections sempre que socketData mudar
-    setSelections(socketData);
-  }, [socketData]);
-
-  useEffect(() => {
-    const selection = selections[props.name];
-    if (selection) {
-      setIsSelected(true);
-      setCurrentUser(selection.name);
-      setIsConfirmed(selection.isConfirmed);
-    } else {
-      setIsSelected(false);
-      setCurrentUser("");
-      setIsConfirmed(false);
-    }
-  }, [props.name, selections]);
+  }, [socket]);
 
   const calcTotal = () => {
-    if (user.selectionQty > state.offset) {
-      setTotal(user.selectionQty * state.promoPrice);
-    } else {
-      setTotal(user.selectionQty * state.price);
-    }
+    let total = 0;
+    Object.keys(selections).forEach((key) => {
+      if (selections[key].name === user.name) {
+        total += selections[key].selectionQty;
+      }
+    });
+    setTotal(total);
   };
 
   return (

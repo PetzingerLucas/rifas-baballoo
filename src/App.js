@@ -4,7 +4,7 @@ import React from "react";
 import Context from "./context/Context";
 import Path from "./pages/routes";
 import io from "socket.io-client";
-const socket = io("https://rifas-baballoo-server.herokuapp.com/");
+const socket = io("https://rifas-baballoo-server.vercel.app/api/socket");
 socket.on("connect", () => {
   console.log("[IO] Connect => a new connection has been established");
 });

@@ -10,7 +10,7 @@ function ConfirmationButton() {
       user.name
     }\n*Nomes escolhidos:*\n${user.selection.join(
       "\n"
-    )}\n*Valor a pagar:* ${total}\n*Chave PIX:* ${pixKey}`;
+    )}\n*Valor a pagar:* ${total}`;
     navigator.clipboard.writeText(pixKey);
     window.location.href = `https://wa.me/4199120418/?text=${encodeURIComponent(
       message

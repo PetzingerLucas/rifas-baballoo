@@ -89,17 +89,6 @@
   transition: all .3s ease-in-out;
 }
 
-/* hover effects */
-.name-container:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-
-.selected-container-main:hover {
-  cursor: pointer;
-  transform: scale(1.05);
-}
-
 /* Form */
 .form {
   display: flex;

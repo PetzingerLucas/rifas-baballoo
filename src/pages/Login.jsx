@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 import Header from "../components/Header";
 import Context from "../context/Context";
@@ -15,6 +15,8 @@ function Login() {
     if (username === "eliane" && password === "Petz1973") {
       setIsLogged(true); // Atualizando o estado isLogged
       setIsAdmin(true); // Atualizando o estado isLogged
+      localStorage.setItem("isLogged", true); // Salvando isLogged no localStorage
+      localStorage.setItem("isAdmin", true); // Salvando isAdmin no localStorage
       navigate("/criar");
     } else {
       alert("Usuário ou senha incorretos!");

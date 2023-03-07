@@ -4,31 +4,21 @@ import Context from "../context/Context";
 function RaffleContent() {
   const { state, socket } = useContext(Context);
   const [raffleInfo, setRaffleInfo] = useState(state);
-  const [isFirstUpdate, setIsFirstUpdate] = useState(true);
 
   useEffect(() => {
     const receiveRaffleInfoFromServer = (raffleInfo) => {
-      if (
-        !raffleInfo.name ||
-        (raffleInfo.name.trim() === "" &&
-          raffleInfo.price === 0 &&
-          raffleInfo.offset === 0 &&
-          raffleInfo.promoPrice === 0 &&
-          !raffleInfo.description) ||
-        raffleInfo.description.trim() === ""
-      ) {
-        return;
-      }
-      if (isFirstUpdate) {
-        setRaffleInfo(raffleInfo);
-        setIsFirstUpdate(false);
-      }
+      socket.emit("get_raffle_info");
     };
-    socket.on("raffle_info", receiveRaffleInfoFromServer);
+
+    socket.on("raffle_info", (raffleInfo) => {
+      setRaffleInfo(raffleInfo);
+      console.log(raffleInfo);
+    });
+
     return () => {
       socket.off("raffle_info", receiveRaffleInfoFromServer);
     };
-  }, [isFirstUpdate]);
+  }, [socket]);
 
   return (
     <div
