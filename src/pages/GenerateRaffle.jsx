@@ -48,7 +48,7 @@ function GenerateRaffle() {
   return (
     <div className="App">
       <Header />
-      <h1>Criar Rifa</h1>
+      <h1 style={{ width: "100%" }}>Criar Rifa</h1>
       <div className="form">
         <label htmlFor="raffle_name">Nome da Rifa:</label>
         <input

@@ -19,7 +19,7 @@ function Login() {
   return (
     <div className="App">
       <Header />
-      <h1>Login</h1>
+      <h1 style={{ width: "100%" }}>Login</h1>
       <div className="form">
         <label htmlFor="username">Usuário:</label>
         <input
