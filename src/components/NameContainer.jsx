@@ -8,6 +8,7 @@ function NameContainer(props) {
   const [selections, setSelections] = useState({});
   const [socketData, setSocketData] = useState({});
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isAdmin] = useState(localStorage.getItem("isAdmin") === "true");
 
   const handleClick = (event) => {
@@ -97,8 +98,8 @@ function NameContainer(props) {
   };
 
   useEffect(() => {
-    const selection = selections[props.name];
-    if (selection) {
+    if (selections && props.name && selections.hasOwnProperty(props.name)) {
+      const selection = selections[props.name];
       setCurrentUser(selection.name);
       setIsSelected(true);
       setIsConfirmed(selection.isConfirmed);
@@ -117,7 +118,7 @@ function NameContainer(props) {
       setSocketData(data);
       setSelections(data.selections);
     });
-
+    setIsLoading(false);
     return () => {
       socket.off("selected");
       socket.off("raffle_info");
@@ -126,31 +127,38 @@ function NameContainer(props) {
 
   const calcTotal = () => {
     let total = 0;
-    Object.keys(selections).forEach((key) => {
-      if (selections[key].name === user.name) {
-        total += selections[key].selectionQty;
-      }
-    });
+    if (typeof selections === "object" && selections !== null) {
+      Object.keys(selections).forEach((key) => {
+        if (selections[key].name === user.name) {
+          total += selections[key].selectionQty;
+        }
+      });
+    }
     setTotal(total);
   };
 
   return (
-    <div
-      onClick={(e) => {
-        handleClick(e);
-      }}
-      id={props.name}
-      className={
-        isSelected
-          ? `selected-container-${
-              currentUser === user.name ? "main" : "other"
-            }${isConfirmed ? " confirmed" : ""}`
-          : "name-container"
-      }
-    >
-      <p id={props.name}>{props.name}</p>
-      <p className="user-name-text">{currentUser}</p>
-    </div>
+    !isLoading &&
+    user &&
+    state &&
+    socket && (
+      <div
+        onClick={(e) => {
+          handleClick(e);
+        }}
+        id={props.name}
+        className={
+          isSelected
+            ? `selected-container-${
+                currentUser === user.name ? "main" : "other"
+              }${isConfirmed ? " confirmed" : ""}`
+            : "name-container"
+        }
+      >
+        <p id={props.name}>{props.name}</p>
+        <p className="user-name-text">{currentUser}</p>
+      </div>
+    )
   );
 }
 export default NameContainer;

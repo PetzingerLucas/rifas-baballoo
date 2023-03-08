@@ -50,6 +50,7 @@ function GenerateRaffle() {
   const sendRaffleInfoToServer = () => {
     // Envia as informações da rifa para o servidor websocket
     socket.emit("update_raffle_info", state);
+    socket.emit("update_selections", {});
   };
   return (
     <div className="App">
